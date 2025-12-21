@@ -1,9 +1,10 @@
 'use client';
 import { RootUser } from '@/@types/userResponse';
 import { getUser } from '@/api/getUser';
+import { CustomButton } from '@/shared/CustomButton';
 import { useState, useTransition } from 'react';
 
-export const TransitionReact = () => {
+const TransitionReact = () => {
   const [user, setUser] = useState<RootUser>();
   const [error, setError] = useState<string>();
   const [isLoading, startTransition] = useTransition();
@@ -21,7 +22,7 @@ export const TransitionReact = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-2.5">
       {isLoading && <span>Загрузка...</span>}
       {error && <span>{error}</span>}
       {user && (
@@ -30,7 +31,14 @@ export const TransitionReact = () => {
           <h2>{user.username}</h2>
         </>
       )}
-      <button onClick={reqUser}>Запросить пользака</button>
+      <CustomButton
+        onClick={reqUser}
+        className="px-2 py-3 rounded-full bg-amber-700 text-amber-100 w-[200px]"
+      >
+        Запросить пользака
+      </CustomButton>
     </div>
   );
 };
+
+export default TransitionReact;

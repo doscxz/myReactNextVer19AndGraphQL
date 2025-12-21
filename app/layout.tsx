@@ -1,3 +1,6 @@
+import { LeftBar } from '@/component/LeftBar';
+import './global.css';
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +8,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <LeftBar />
+        {children}
+      </body>
     </html>
   );
 }
