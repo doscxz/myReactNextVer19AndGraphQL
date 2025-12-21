@@ -1,0 +1,146 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "ecmaFeatures": {
+      "jsx": true,
+    },
+    "useJSXTextNode": true,
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "commonjs": true,
+    "jest": true,
+  },
+  "plugins": ["@typescript-eslint", "react"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "prettier",
+  ],
+  "rules": {
+    "sonarjs/cognitive-complexity": "warn",
+    "@typescript-eslint/no-var-requires": 0,
+    "global-require": 0,
+    "semi": 2,
+    "react/jsx-key": 0,
+    "no-use-before-define": 0,
+    "quote-props": "off",
+    "no-promise-executor-return": "warn",
+    "implicit-arrow-linebreak": "off",
+    "comma-dangle": "off",
+    "no-confusing-arrow": "off",
+    "linebreak-style": "off",
+    "function-paren-newline": "off",
+    "object-curly-newline": "off",
+    "max-len": "off",
+    "@typescript-eslint/ban-ts-ignore": 0,
+    "arrow-body-style": "warn",
+    "@typescript-eslint/ban-types": 0,
+    "@typescript-eslint/ban-ts-comment": 0,
+    "@typescript-eslint/no-unused-vars": 1,
+    "@typescript-eslint/no-empty-function": 1,
+    "@typescript-eslint/no-use-before-define": 2,
+    "@typescript-eslint/no-explicit-any": [
+      2,
+      {
+        "ignoreRestArgs": false,
+      },
+    ],
+    "@typescript-eslint/interface-name-prefix": 0,
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/prefer-function-type": 2,
+    "react/react-in-jsx-scope": 0,
+    "react/require-default-props": 0,
+    "react/no-unused-prop-types": 1,
+    "react/destructuring-assignment": 1,
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx", ".tsx"],
+      },
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "import/no-extraneous-dependencies": [
+      2,
+      {
+        "devDependencies": true,
+      },
+    ],
+    "import/prefer-default-export": 0,
+    "import/no-named-as-default": "off",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": ["state"],
+      },
+    ],
+    "no-shadow": 0,
+    "spaced-comment": [
+      "error",
+      "always",
+      {
+        "markers": ["/"],
+      },
+    ],
+    "jsx-a11y/control-has-associated-label": 1,
+    "jsx-a11y/label-has-associated-control": [
+      1,
+      {
+        "labelComponents": ["CustomInputLabel"],
+        "labelAttributes": ["label"],
+        "controlComponents": ["CustomInput"],
+        "depth": 3,
+      },
+    ],
+    "newline-before-return": "warn",
+    "prefer-const": "warn",
+    "jsx-a11y/label-has-for": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never",
+      },
+    ],
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+      },
+    },
+    {
+      "files": ["style.ts"],
+      "rules": {
+        "import/no-unresolved": 0,
+      },
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "no-undef": 0,
+      },
+    },
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
+  },
+}
