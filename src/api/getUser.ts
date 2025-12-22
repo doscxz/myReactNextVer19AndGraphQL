@@ -2,13 +2,13 @@
 
 import { RootUser } from '@/@types/userResponse';
 import { delay } from '@/helpers/helpers';
-import { log } from 'node:console';
 
 export const getUser = async (
   id?: FormDataEntryValue | null,
   delayMS: number = 2000
 ): Promise<RootUser> => {
   let url: string = `https://jsonplaceholder.typicode.com/users`;
+
   //COMMENT: задержка
   await delay(delayMS);
 

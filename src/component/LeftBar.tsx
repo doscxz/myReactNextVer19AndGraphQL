@@ -6,6 +6,7 @@ export const LeftBar = () => {
     <div className="flex justify-around bg-violet-900 py-3">
       <CustomLink href={ROUTES.TransitionReact}>TransitionReact</CustomLink>
       <CustomLink href={ROUTES.ActionStateReact}>ActionStateReact</CustomLink>
+      <CustomLink href={ROUTES.OptimisticReact}>optimisticReact</CustomLink>
     </div>
   );
 };
