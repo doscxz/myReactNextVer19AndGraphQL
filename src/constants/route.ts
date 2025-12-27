@@ -3,4 +3,5 @@ export const ROUTES = {
   ActionStateReact: '/action-state-react',
   OptimisticReact: '/optimistic-react',
   ReactUse: '/react-use',
+  DeferredValueReact: '/deferred-value-react',
 };

@@ -1,12 +1,16 @@
-'use server';
-
 import { RootUser } from '@/@types/userResponse';
 import { delay } from '@/helpers/helpers';
+
+const cacheId = new Map();
 
 export const getUser = async (
   id?: FormDataEntryValue | null,
   delayMS: number = 2000
 ): Promise<RootUser> => {
+  if (cacheId.has(id)) {
+    return;
+  }
+  cacheId.set(id, id);
   let url: string = `https://jsonplaceholder.typicode.com/users`;
 
   //COMMENT: задержка
@@ -17,10 +21,7 @@ export const getUser = async (
   }
   const users = await fetch(url);
 
-  const user = await users.json();
+  const user = await users.json().finally(() => cacheId.delete(id));
 
-  if (Array.isArray(user)) {
-    return user[0];
-  }
   return user;
 };

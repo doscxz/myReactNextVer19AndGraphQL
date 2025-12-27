@@ -15,7 +15,7 @@ function UserContent({ userPromise }: { userPromise: Promise<RootUser> }) {
 }
 
 const ReactUse = () => {
-  const userPromise = getUser();
+  const userPromise = getUser('1');
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

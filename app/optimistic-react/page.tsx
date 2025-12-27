@@ -3,7 +3,7 @@
 import { getUser } from '@/api/getUser';
 import { CustomButton } from '@/shared/CustomButton';
 import { CustomInput } from '@/shared/CustomInput';
-import { useEffect, useOptimistic, useState } from 'react';
+import { useEffect, useOptimistic, useRef, useState } from 'react';
 
 const NAME_INPUT = 'name';
 const USER_ID = '2';

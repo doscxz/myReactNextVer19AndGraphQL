@@ -8,6 +8,9 @@ export const LeftBar = () => {
       <CustomLink href={ROUTES.ActionStateReact}>ActionStateReact</CustomLink>
       <CustomLink href={ROUTES.OptimisticReact}>optimisticReact</CustomLink>
       <CustomLink href={ROUTES.ReactUse}>use-react</CustomLink>
+      <CustomLink href={ROUTES.DeferredValueReact}>
+        deferred-value-react
+      </CustomLink>
     </div>
   );
 };
