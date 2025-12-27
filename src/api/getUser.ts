@@ -12,7 +12,7 @@ export const getUser = async (
   //COMMENT: задержка
   await delay(delayMS);
 
-  if (typeof +id === 'number') {
+  if (!isNaN(+id)) {
     url = `https://jsonplaceholder.typicode.com/users/${id}`;
   }
   const users = await fetch(url);

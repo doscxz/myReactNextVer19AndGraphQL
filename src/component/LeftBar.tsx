@@ -7,6 +7,7 @@ export const LeftBar = () => {
       <CustomLink href={ROUTES.TransitionReact}>TransitionReact</CustomLink>
       <CustomLink href={ROUTES.ActionStateReact}>ActionStateReact</CustomLink>
       <CustomLink href={ROUTES.OptimisticReact}>optimisticReact</CustomLink>
+      <CustomLink href={ROUTES.ReactUse}>use-react</CustomLink>
     </div>
   );
 };
