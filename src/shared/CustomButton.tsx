@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 type Props = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
-> & { children: React.ReactNode };
+> & { children?: React.ReactNode };
 
 export const CustomButton = ({ children, ...props }: Props) => {
   return (
