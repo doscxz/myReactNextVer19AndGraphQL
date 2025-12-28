@@ -33,6 +33,8 @@ yarn start
 └── package.json           # Зависимости проекта
 ```
 
+# React v19
+
 ## Описание хука `useTransition`
 
 ### Для чего?
@@ -311,3 +313,295 @@ const deferredValue = useDeferredValue(value);
 ### Итог
 
 useDeferredValue — это инструмент для повышения отзывчивости интерфейса, позволяющий отложить обновления не критичных для мгновенного отображения частей UI, улучшая пользовательский опыт при работе с часто меняющимися значениями.
+
+# Next v16
+
+## Turbopack
+
+Теперь Turbopack идет по умолчанию для `yarn dev` and `yarn build`.
+
+! Если требуется использовать webpack требуется дополнить скрипт `yarn build` дописав `--webpack`. Итог:
+
+```
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start"
+  }
+```
+
+## API асинхронных запросов (критическое изменение)
+
+В версии 15 API асинхронных запросов были представлены как критическое изменение с временной синхронной совместимостью.
+
+Начиная с Next. js 16 синхронный доступ полностью удалён. Доступ к этим API возможен только в асинхронном режиме.
+
+- cookies
+- headers
+- draftMode
+- params в layout.js, page.js, route.js, default.js opengraph-image, twitter-image icon, apple-icon....
+- searchParams в page.js
+
+## Поддержка компилятора React
+
+Встроенная поддержка React Compiler теперь стабильна в Next. js 16 после выхода React Compiler 1.0. React Compiler автоматически запоминает компоненты, сокращая количество ненужных повторных рендеров без необходимости вносить изменения в код вручную.
+
+Параметр конфигурации reactCompiler был повышен с experimental до стабильного уровня. Он не включен по умолчанию, так как мы продолжаем собирать данные о производительности сборки для различных типов приложений.
+
+```typescript
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  reactCompiler: true,
+};
+
+export default nextConfig;
+```
+
+Установите последнюю версию плагина React Compiler:
+
+```terminal
+npm install -D babel-plugin-react-compiler
+```
+
+При включении этой опции время компиляции в процессе разработки и во время сборки будет выше, так как React Compiler использует Babel.
+
+## Обновление
+
+`refresh` позволяет обновить клиентский маршрутизатор с помощью серверного действия.
+
+```TypeScript
+'use server'
+import { refresh } from 'next/cache'
+
+export async function markNotificationAsRead(notificationId: string) {
+  await db.notifications.markAsRead(notificationId)
+
+  refresh()
+}
+```
+
+Используйте его, когда вам нужно обновить клиентский маршрутизатор после выполнения какого-либо действия.
+
+## next/image изменения
+
+Локальные источники изображений с параметрами запроса теперь требуют images.localPatterns.search конфигурации для предотвращения атак методом перебора.
+
+```TypeScript
+import Image from 'next/image'
+
+export default function Page() {
+  return <Image src="/assets/photo?v=1" alt="Photo" width="100" height="100" />
+}
+```
+
+Если вам нужно использовать строки запроса с локальными изображениями, добавьте шаблон в свою конфигурацию:
+
+`next.config.ts`
+
+```TypeScript
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  images: {
+    localPatterns: [
+      {
+        pathname: '/assets/**',
+        search: '?v=1',
+      },
+    ],
+  },
+}
+
+export default nextConfig
+```
+
+## imageSizes По умолчанию
+
+Значение 16 было удалено из массива images.imageSizes по умолчанию.
+
+Мы изучили аналитику запросов и выяснили, что очень немногие проекты используют изображения шириной 16 пикселей. Если отключить эту настройку, размер атрибута srcset, отправляемого в браузер, уменьшится на next/image.
+
+Если вам нужно поддерживать изображения размером 16 пикселей:
+
+```TypeScript
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  images: {
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+}
+
+export default nextConfig
+```
+
+## qualities По умолчанию (критическое изменение)
+
+Значение по умолчанию для images.qualities изменилось: теперь разрешены только [75].
+
+Если вам нужно поддерживать несколько уровней качества:
+
+```TypeScript
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  images: {
+    qualities: [50, 75, 100],
+  },
+}
+
+export default nextConfig
+```
+
+## Ограничение локального IP
+
+Новое ограничение безопасности по умолчанию блокирует оптимизацию локального IP. Установите images.dangerouslyAllowLocalIP значение true только для частных сетей.
+
+```TypeScript
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  images: {
+    dangerouslyAllowLocalIP: true, // Only for private networks
+  },
+}
+
+export default nextConfig
+```
+
+## Максимальное количество перенаправлений (критическое изменение)
+
+По умолчанию для images.maximumRedirects установлено максимальное количество перенаправлений, равное 3.
+
+```TypeScript
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+images: {
+maximumRedirects: 0, // Disable redirects
+// or
+maximumRedirects: 5, // Increase for edge cases
+},
+}
+
+export default nextConfig
+```
+
+## images.domains Конфигурация
+
+Конфигурация images.domains устарела.
+
+```typescript
+// `next.config.js`
+module.exports = {
+  images: {
+    domains: ['example.com'],
+  },
+};
+```
+
+Для повышения безопасности используйте images.remotePatterns:
+
+```typescript
+// next.config.js
+// Use image.remotePatterns instead
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+      },
+    ],
+  },
+};
+```
+
+## Параллельные маршруты default.js требование
+
+Для всех параллельных маршрутов теперь требуются явные default.js файлы. Без них сборка завершится ошибкой.
+
+Чтобы сохранить предыдущее поведение, создайте default.js файл, который вызывает notFound() или возвращает null.
+
+```typescript
+// ../@modal/default.tsx
+import { notFound } from 'next/navigation';
+
+export default function Default() {
+  notFound();
+}
+```
+
+Или вернуться null:
+
+```typescript
+// .../@modal/default.tsx
+export default function Default() {
+  return null;
+}
+```
+
+# JS ES2025
+
+## Импорт атрибутов и модулей JSON
+
+Атрибуты импорта обеспечивают синтаксическую основу для импорта артефактов, не относящихся к JavaScript. Первыми поддерживаемыми артефактами такого рода являются модули JSON:
+
+```typescript
+// Статический импорт
+import configData1 from './config-data.json' with { type: 'json' };
+
+// Динамический импорт
+const configData2 = await import('./config-data.json', {
+  with: { type: 'json' },
+});
+```
+
+Синтаксис объектного литерала после with используется для указания атрибутов импорта. type является атрибутом импорта.
+
+## Promise.try
+
+Метод try() — это один из статических методов объекта Promise. Метод Promise.try() оборачивает результат выполнения колбэк-функции в промис.
+
+Если при выполнении запроса (асинхронной операции) произойдёт ошибка, она будет корректно обработана c помощью catch(), потому что функция вернёт промис в состоянии «ошибка».
+
+Но что произойдёт, если при выполнении getData() возникнет синхронная ошибка, например, при формировании данных для запроса? Функция не вернёт промис, а ошибка останется необработанной.
+
+Рассмотрим на примере:
+
+```typescript
+function getData(requestData) {
+  // В функции отсутствует проверка типа аргумента
+  const url = requestData.url; // ❌
+
+  return fetch(url);
+}
+```
+
+Вызов функции без параметра приведёт к ошибке TypeError
+
+```typescript
+getData()
+  .then((result) => {
+    // ...
+  })
+  .catch((error) => {
+    // Ошибка не будет обработана
+  });
+```
+
+Чтобы единообразно обрабатывать ошибки в блоке catch нужно, чтобы функция getData() всегда возвращала промис, даже если внутри синхронный код. В этом нам поможет Promise.try():
+
+Вызов функции без параметра приведёт к ошибке, но она будет обработана,
+так как `Promise.try()` возвращает промис
+
+```typescript
+Promise.try(getData)
+  .then((result) => {
+    // ...
+  })
+  .catch((error) => {
+    // Обработка ошибки
+  });
+```
